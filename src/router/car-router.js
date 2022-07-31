@@ -11,3 +11,5 @@ router.post('/voitures/ajouter', createCar);
 router.get('/voitures', getCars);
 router.patch('/voitures/editer/:cid', editCar);
 router.delete('/voitures/:cid', deleteCar);
+
+module.exports = router;
