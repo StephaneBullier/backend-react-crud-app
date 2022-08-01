@@ -13,7 +13,7 @@ const createUser = async (req, res) => {
 const getUsers = async (req, res) => {
   try {
     const users = await User.find({}, '-password');
-    res.send(users);
+    res.json({ users: users.map((user) => user.toObject({ getters: true })) });
   } catch (e) {
     res.status(500).send();
   }
