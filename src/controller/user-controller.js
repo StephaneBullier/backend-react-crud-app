@@ -28,10 +28,17 @@ const getUserById = async (req, res) => {
   }
 };
 
-const editUser = async (req, res) => {
+const updateUser = async (req, res) => {
   const _id = req.params.uid;
   const updates = Object.keys(req.body);
-  const allowedUpdates = ['lastname', 'firstname', 'email', 'isActivated'];
+  const allowedUpdates = [
+    '_id',
+    'lastname',
+    'firstname',
+    'email',
+    'userType',
+    'isActivated',
+  ];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
@@ -75,5 +82,5 @@ const deleteUser = async (req, res) => {
 exports.createUser = createUser;
 exports.getUsers = getUsers;
 exports.getUserById = getUserById;
-exports.editUser = editUser;
+exports.updateUser = updateUser;
 exports.deleteUser = deleteUser;
