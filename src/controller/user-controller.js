@@ -19,6 +19,15 @@ const getUsers = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.uid);
+    res.send({ user });
+  } catch (e) {
+    res.status(500).send();
+  }
+};
+
 const editUser = async (req, res) => {
   const _id = req.params.uid;
   const updates = Object.keys(req.body);
@@ -65,5 +74,6 @@ const deleteUser = async (req, res) => {
 
 exports.createUser = createUser;
 exports.getUsers = getUsers;
+exports.getUserById = getUserById;
 exports.editUser = editUser;
 exports.deleteUser = deleteUser;
