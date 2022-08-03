@@ -3,13 +3,15 @@ const router = Router();
 const {
   createCar,
   getCars,
-  editCar,
+  getCar,
+  updateCar,
   deleteCar,
 } = require('../controller/car-controller');
 
-router.post('/voitures/ajouter', createCar);
-router.get('/voitures', getCars);
-router.patch('/voitures/editer/:cid', editCar);
-router.delete('/voitures/:cid', deleteCar);
+router.post('/car', createCar);
+router.get('/cars', getCars);
+router.get('/car/:cid', getCar);
+router.patch('/car/:cid', updateCar);
+router.delete('/car/:cid', deleteCar);
 
 module.exports = router;
