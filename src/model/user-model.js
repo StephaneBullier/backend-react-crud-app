@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
+const HttpError = require('../util/http-error');
 
 const userSchema = new Schema(
   {
@@ -40,4 +42,18 @@ const userSchema = new Schema(
   }
 );
 
-module.exports = model('User', userSchema);
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new HttpError('Unable to login', 406);
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    throw new HttpError('Unable to login', 406);
+  }
+
+  return user;
+};
+
+const User = (module.exports = model('User', userSchema));

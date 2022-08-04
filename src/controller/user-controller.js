@@ -124,8 +124,21 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  try {
+    const user = await User.findByCredentials(
+      req.body.email,
+      req.body.password
+    );
+    res.send({ user });
+  } catch (e) {
+    res.status(e.code).send(e.message);
+  }
+};
+
 exports.createUser = createUser;
 exports.getUsers = getUsers;
 exports.getUserById = getUserById;
 exports.updateUser = updateUser;
 exports.deleteUser = deleteUser;
+exports.login = login;
