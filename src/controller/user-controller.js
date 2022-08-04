@@ -1,10 +1,45 @@
+const { validationResult } = require('express-validator');
+const HttpError = require('../util/http-error');
 const User = require('../model/user-model');
 
-const createUser = async (req, res) => {
-  const user = new User(req.body);
+const createUser = async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError('Invalid input passed, please check your data', 422)
+    );
+  }
+
+  const { lastname, firstname, email, password, userType, isActivated } =
+    req.body;
+
+  let existingUser;
+
+  /* On recherche un utilisateur avec email saisi */
   try {
-    await user.save();
-    res.status(201).send({ user });
+    existingUser = await User.findOne({ email });
+  } catch (err) {
+    return next(new HttpError('Signing up failed', 500));
+  }
+
+  /* Si on a déjà un email on retourne une erreur */
+  if (existingUser) {
+    return next(new HttpError('User exist already, login instead', 422));
+  }
+
+  const createdUser = new User({
+    lastname,
+    firstname,
+    email,
+    password,
+    userType,
+    isActivated,
+  });
+
+  try {
+    await createdUser.save();
+    res.status(201).send({ createdUser });
   } catch (error) {
     res.status(400).send(error);
   }
