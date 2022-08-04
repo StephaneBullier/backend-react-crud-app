@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 const validator = require('validator');
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
-    lastname: { type: String, require: true, trim: true },
-    firstname: { type: String, require: true, trim: true },
+    lastname: { type: String, required: true, trim: true },
+    firstname: { type: String, required: true, trim: true },
     email: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
       trim: true,
       lowercase: true,
@@ -17,11 +17,11 @@ const userSchema = new mongoose.Schema(
         }
       },
     },
-    password: { type: String, require: true, trim: true, minLength: 7 },
+    password: { type: String, required: true, trim: true, minLength: 7 },
     userType: {
       type: String,
       enum: ['Administrateur', 'Commercial'],
-      require: true,
+      required: true,
     },
     isActivated: { type: Boolean },
   },
@@ -30,6 +30,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-const User = mongoose.model('User', userSchema);
+const User = model('User', userSchema);
 
 module.exports = User;
