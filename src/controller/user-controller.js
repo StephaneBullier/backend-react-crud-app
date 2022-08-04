@@ -21,7 +21,7 @@ const getUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.uid);
+    const user = await User.findById(req.params.uid, '-password');
     res.send({ user });
   } catch (e) {
     res.status(500).send();
