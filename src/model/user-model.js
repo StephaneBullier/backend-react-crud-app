@@ -13,11 +13,21 @@ const userSchema = new Schema(
       lowercase: true,
       validate(value) {
         if (!validator.isEmail(value)) {
-          throw new Error('Email is invalid');
+          throw new Error('Email is invalided');
         }
       },
     },
-    password: { type: String, required: true, trim: true, minLength: 7 },
+    password: {
+      type: String,
+      required: true,
+      trim: true,
+      minLength: 7,
+      validate(value) {
+        if (value.toLowerCase().includes('password')) {
+          throw new Error('Password cannot contain "password"');
+        }
+      },
+    },
     userType: {
       type: String,
       enum: ['Administrateur', 'Commercial'],
@@ -30,6 +40,4 @@ const userSchema = new Schema(
   }
 );
 
-const User = model('User', userSchema);
-
-module.exports = User;
+module.exports = model('User', userSchema);
